@@ -3,7 +3,7 @@ import pandas as pd
 import requests
 
 # 🔗 REPLACE this URL with the Raw GitHub link to your tasks.json file
-DATA_URL = "https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/chatgpt-task-tracker/main/tasks.json"
+DATA_URL = "https://raw.githubusercontent.com/AnimiAK/chatgpt-task-tracker/refs/heads/main/tasks.json"
 
 def fetch_tasks():
     """Fetch the latest task updates from the live JSON data source."""
