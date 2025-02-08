@@ -1,35 +1,33 @@
 import streamlit as st
 import pandas as pd
-import time
+import requests
 
-# Sample task data
-tasks = [
-    ["Sponsorships", "Finalize media kit & outreach email", "High", "In Progress", 70, "2025-02-13"],
-    ["Merch Store", "Finalize store banner & mockups", "High", "In Progress", 50, "2025-02-15"],
-    ["Digital Products", "Design vanlife budgeting template", "High", "In Progress", 40, "2025-02-14"],
-    ["YouTube Automation", "Finish first 'Top 10' script", "High", "In Progress", 60, "2025-02-12"],
-    ["VanFit Respawn", "Develop bodyweight workout plan", "High", "In Progress", 50, "2025-02-14"],
-]
+# 🔗 REPLACE this URL with the Raw GitHub link to your tasks.json file
+DATA_URL = "https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/chatgpt-task-tracker/main/tasks.json"
 
+def fetch_tasks():
+    """Fetch the latest task updates from the live JSON data source."""
+    try:
+        response = requests.get(DATA_URL)
+        response.raise_for_status()
+        data = response.json()
+        return pd.DataFrame(data["tasks"])  # Convert JSON data to DataFrame
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error fetching data: {e}")
+        return pd.DataFrame([], columns=["Project", "Task", "Priority", "Status", "Progress (%)", "ETA"])
 
-# Convert to DataFrame
-df = pd.DataFrame(tasks, columns=["Project", "Task", "Priority", "Status", "Progress (%)", "ETA"])
+# Fetch the latest task updates
+df = fetch_tasks()
 
 # Streamlit Dashboard
 st.title("ChatGPT Task Manager - Real-Time Progress Tracker")
-st.write("This dashboard refreshes automatically every time new data is available.")
+st.write("This dashboard auto-updates based on live progress.")
 
 # Display tasks dynamically
-for index, row in df.iterrows():
-    st.subheader(f"📌 {row['Project']} - {row['Task']}")
-    st.write(f"**Priority:** {row['Priority']} | **Status:** {row['Status']} | **ETA:** {row['ETA']}")
-    st.progress(int(row["Progress (%)"]))
-
-# Auto-refresh using session state instead of experimental functions
-if "last_refresh" not in st.session_state:
-    st.session_state.last_refresh = time.time()
-
-# Force refresh every 30 seconds
-if time.time() - st.session_state.last_refresh > 30:
-    st.session_state.last_refresh = time.time()
-    st.rerun()
+if not df.empty:
+    for index, row in df.iterrows():
+        st.subheader(f"📌 {row['Project']} - {row['Task']}")
+        st.write(f"**Priority:** {row['Priority']} | **Status:** {row['Status']} | **ETA:** {row['ETA']}")
+        st.progress(int(row["Progress (%)"]))
+else:
+    st.write("⚠ No tasks available. Waiting for live updates...")
