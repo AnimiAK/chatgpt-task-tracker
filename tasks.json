@@ -1,0 +1,44 @@
+{
+    "tasks": [
+        {
+            "Project": "Sponsorships",
+            "Task": "Finalize media kit & outreach email",
+            "Priority": "High",
+            "Status": "In Progress",
+            "Progress (%)": 70,
+            "ETA": "2025-02-13"
+        },
+        {
+            "Project": "Merch Store",
+            "Task": "Finalize store banner & mockups",
+            "Priority": "High",
+            "Status": "In Progress",
+            "Progress (%)": 50,
+            "ETA": "2025-02-15"
+        },
+        {
+            "Project": "Digital Products",
+            "Task": "Design vanlife budgeting template",
+            "Priority": "High",
+            "Status": "In Progress",
+            "Progress (%)": 40,
+            "ETA": "2025-02-14"
+        },
+        {
+            "Project": "YouTube Automation",
+            "Task": "Finish first 'Top 10' script",
+            "Priority": "High",
+            "Status": "In Progress",
+            "Progress (%)": 60,
+            "ETA": "2025-02-12"
+        },
+        {
+            "Project": "VanFit Respawn",
+            "Task": "Develop bodyweight workout plan",
+            "Priority": "High",
+            "Status": "In Progress",
+            "Progress (%)": 50,
+            "ETA": "2025-02-14"
+        }
+    ]
+}
