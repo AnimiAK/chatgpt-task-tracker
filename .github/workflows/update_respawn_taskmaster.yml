@@ -1,0 +1,45 @@
+name: Auto-Update Respawn TaskMaster
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'  # Runs every 30 minutes
+  workflow_dispatch:  # Allows manual runs
+
+jobs:
+  update-tasks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
+
+      - name: Install Dependencies
+        run: pip install requests
+
+      - name: Fetch Latest Task Updates
+        run: |
+          import requests
+          import json
+
+          # Fetch the latest task updates
+          TASKS_JSON_URL = "https://your-live-api-endpoint.com/tasks.json"  # Replace with real hosted API URL
+          response = requests.get(TASKS_JSON_URL)
+
+          if response.status_code == 200:
+              tasks_data = response.json()
+              with open("tasks.json", "w") as json_file:
+                  json.dump(tasks_data, json_file, indent=4)
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          git add tasks.json
+          git commit -m "Auto-update tasks.json [Automated]"
+          git push
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
