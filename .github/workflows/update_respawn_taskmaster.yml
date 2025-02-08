@@ -23,18 +23,19 @@ jobs:
           pip install requests
 
       - name: Fetch Latest Task Updates
-        run: python -c "
-import requests
-import json
+        run: |
+          python <<EOF
+          import requests
+          import json
 
-TASKS_JSON_URL = 'https://your-live-api-endpoint.com/tasks.json'  # Replace with real hosted API URL
-response = requests.get(TASKS_JSON_URL)
+          TASKS_JSON_URL = "https://your-live-api-endpoint.com/tasks.json"  # Replace with real hosted API URL
+          response = requests.get(TASKS_JSON_URL)
 
-if response.status_code == 200:
-    tasks_data = response.json()
-    with open('tasks.json', 'w') as json_file:
-        json.dump(tasks_data, json_file, indent=4)
-"
+          if response.status_code == 200:
+              tasks_data = response.json()
+              with open("tasks.json", "w") as json_file:
+                  json.dump(tasks_data, json_file, indent=4)
+          EOF
 
       - name: Commit and Push Changes
         run: |
